@@ -2,20 +2,18 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
-var db = mongoose.connect('mongodb://localhost/cardAPI');
+var db = mongoose.connect('mongodb://localhost/cardAPI', {useMongoClient: true});
 var Card = require('./models/cardModel');
 var app = express();
 var apiRouter = express.Router();
-
-
 
 var port = process.env.PORT || 3000;
 
 apiRouter.route('/pokemon/cards')
     .post(function(req, res){
         var card = new Card(req.body);
-        console.log("new card put in db");
         card.save();
+        console.log(`${card.name} was put into the cardAPI database in the cards collection`);
         res.status(201).send(card);
     })
     .get(function(req, res){
