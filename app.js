@@ -2,18 +2,21 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
-var db = mongoose.connect('mongodb://localhost/bookAPI');
+var db = mongoose.connect('mongodb://localhost/cardAPI');
 var Card = require('./models/cardModel');
 var app = express();
 var apiRouter = express.Router();
+
+
 
 var port = process.env.PORT || 3000;
 
 apiRouter.route('/pokemon/cards')
     .post(function(req, res){
         var card = new Card(req.body);
-        console.log(card);
-        res.send(card);
+        console.log("new card put in db");
+        card.save();
+        res.status(201).send(card);
     })
     .get(function(req, res){
         Card.find(function(err, cards){
@@ -33,7 +36,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.get('/api', function(req, res){
     res.send('welcome to my API');
 });
-//
+
 app.get('/', function(req, res){
     res.send('welcome to my website!');
 });
