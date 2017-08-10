@@ -1,7 +1,9 @@
-var assert = require('assert');
+var assert = require('assert'),
+    expect = require('chai').expect,
+    should = require('chai').should;
 
 describe('Unit Test', function(){
     it('should not throw errors', function(){
-        assert.equal(3,3);
+        expect(true).to.be.true;
     })
 });
