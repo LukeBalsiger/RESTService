@@ -10,23 +10,12 @@ gulp.task('default', function(){
         env: {
             PORT:8000
         },
-        ignore: ['./node_modules/**']
-    })
-    .on('restart', function(){
-<<<<<<< HEAD
-        console.log('Restarting and running tests...');
-        return gulp.src(['test/*.js'], { read: false })
-        .pipe(mocha({ reporter: 'spec' }))
-        .on('error', gutil.log);
+        ignore: ['./node_modules/**', './test/**', './Work/**', './.git/**']
     })
     .on('start', function(){
         console.log('Running tests...');
-        return gulp.src(['test/*.js'], { read: false })
+        return gulp.src(['test/**/*.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
     })
-=======
-        console.log('Restarting');
-    });
->>>>>>> a0c718f4704bd19357b8a4b8ce19805c180fa06a
 });
