@@ -1,46 +1,44 @@
-"use strict";
+var assert = require('assert'),
+    chai = require('chai'),
+    chaiAsPromised = require('chai-as-promised'),
+    sinon = require('sinon'),
+    expect = require('chai').expect,
+    should = require('chai').should(),
+    selenium = require("selenium-webdriver"),
+    test = require('selenium-webdriver/testing');
 
-var webdriver = require("selenium-webdriver"),
-SeleniumServer = require("selenium-webdriver/remote").SeleniumServer;
+chai.use(chaiAsPromised);
+chai.should();
 
-var cbtHub = "http://hub.crossbrowsertesting.com:80/wd/hub";
-var caps = {
-name: 'Selenium Test Example',
-build: '1.0',
-browser_api_name: 'IE11',
-os_api_name: 'Win10',
-screen_resolution: '1024x768',
-record_video: 'True',
-record_network: 'True',
-browserName: 'internet explorer',
-username: 'yourusername@yourcompany.com',
-password: 'yourauthkey'
-}
+test.describe('Google Search', function() {
+    this.timeout(15000);
+    test.it('should work', function() {
+        var driver = new selenium.Builder()
+        .usingServer()
+        .withCapabilities({'browserName': 'chrome'})
+        .build();
 
-var driver = new webdriver.Builder()
-.usingServer(cbtHub)
-.withCapabilities(caps)
-.build();
+        driver.get('http://www.google.com');
+        var searchBox = driver.findElement(selenium.By.name('q'));
+        searchBox.sendKeys('simple programmer');
+        searchBox.getAttribute('value').then(function(value) {
+            assert.equal(value, 'simple programmer');
+        });
+        driver.quit();
+    });
 
-function checkTitle() {
-driver.getTitle()
-.then(function(title) {
-console.log("The title is: " + title)
+     test.it('should work again', function() {
+        var driver = new selenium.Builder()
+        .usingServer()
+        .withCapabilities({'browserName': 'chrome'})
+        .build();
+
+        driver.get('http://www.google.com');
+        var searchBox = driver.findElement(selenium.By.name('q'));
+        searchBox.sendKeys('simple programmer');
+        searchBox.getAttribute('value').then(function(value) {
+            assert.equal(value, 'simple programmer');
+        });
+        driver.quit();
+    });
 });
-return webdriver.until.titleIs('Selenium Test Example Page');
-}
-
-function handleFailure(err) {
-console.error('Something went wrong!\n', err.stack, '\n');
-quitDriver();
-}
-
-function quitDriver() {
-console.log("WebDriver is about to close.");
-driver.close();
-}
-
-driver.get('http://crossbrowsertesting.github.io/selenium_example_page.html');
-
-driver.wait(checkTitle, 1000)
-.then(quitDriver, handleFailure);
