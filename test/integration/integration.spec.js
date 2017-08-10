@@ -1,6 +1,10 @@
 var assert = require('assert'),
+    chai = require('chai'),
+    chaiAsPromised = require('chai-as-promised'),
     expect = require('chai').expect,
     should = require('chai').should();
+chai.use(chaiAsPromised);
+chai.should();
 
 describe('Integration Test', function(){
     it('should not throw errors', function(){
