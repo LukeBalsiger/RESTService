@@ -19,3 +19,24 @@ gulp.task('default', function(){
         .on('error', gutil.log);
     })
 });
+
+gulp.task('test-unit', function(){
+    console.log('Running unit tests...');
+        return gulp.src(['test/unit/*.js'], { read: false })
+        .pipe(mocha({ reporter: 'spec' }))
+        .on('error', gutil.log);
+});
+
+gulp.task('test-integration', function(){
+    console.log('Running integration tests...');
+        return gulp.src(['test/integration/*.js'], { read: false })
+        .pipe(mocha({ reporter: 'spec' }))
+        .on('error', gutil.log);
+});
+
+gulp.task('test-ui', function(){
+    console.log('Running ui tests...');
+        return gulp.src(['test/ui/*.js'], { read: false })
+        .pipe(mocha({ reporter: 'spec' }))
+        .on('error', gutil.log);
+});

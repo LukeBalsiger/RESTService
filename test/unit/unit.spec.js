@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-describe('Integration Test', function(){
+describe('Unit Test', function(){
     it('should not throw errors', function(){
         assert.equal(3,3);
     })
