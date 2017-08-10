@@ -13,6 +13,7 @@ gulp.task('default', function(){
         ignore: ['./node_modules/**']
     })
     .on('restart', function(){
+<<<<<<< HEAD
         console.log('Restarting and running tests...');
         return gulp.src(['test/*.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
@@ -24,4 +25,8 @@ gulp.task('default', function(){
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
     })
+=======
+        console.log('Restarting');
+    });
+>>>>>>> a0c718f4704bd19357b8a4b8ce19805c180fa06a
 });

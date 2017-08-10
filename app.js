@@ -9,9 +9,11 @@ var express = require('express'),
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-cardRouter = require('./routes/cardRoutes')(Card);
+cardRouter = require('./routes/cardRoute')(Card);
+pokemonRouter = require('./routes/pokemonRoute')();
 
 app.use('/api/pokemon/cards',cardRouter);
+app.use('/api/pokemon',pokemonRouter);
 
 app.get('/api', function(req, res){
     res.send('welcome to my API');
