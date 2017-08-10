@@ -10,10 +10,12 @@
     "express": "^4.15.3",
     "gulp": "^3.9.1",
     "gulp-mocha": "^4.3.1",
+    "gulp-nightwatch": "^0.3.2",
     "gulp-nodemon": "^2.2.1",
     "gulp-util": "^3.0.8",
     "mocha": "^3.5.0",
     "mongoose": "^4.11.4",
+    "nightwatch": "^0.9.16",
     "sinon": "^3.2.0"
   },
   "devDependencies": {},
