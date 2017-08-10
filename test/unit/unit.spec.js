@@ -1,6 +1,7 @@
 var assert = require('assert'),
     chai = require('chai'),
     chaiAsPromised = require('chai-as-promised'),
+    sinon = require('sinon'),
     expect = require('chai').expect,
     should = require('chai').should();
 chai.use(chaiAsPromised);
