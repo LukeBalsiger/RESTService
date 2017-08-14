@@ -14,7 +14,7 @@ gulp.task('default', function(){
     })
     .on('start', function(){
         console.log('Running tests...');
-        return gulp.src(['test/**/*.js'], { read: false })
+        return gulp.src(['test/unit/*.js', 'test/integration/*.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
     })

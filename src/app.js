@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
-    Card = require('./models/cardModel'),
+    Card = require('./models/cardModel.js'),
     port = process.env.PORT || 3000,
     db = mongoose.connect('mongodb://localhost/cardAPI', {useMongoClient: true});
 
