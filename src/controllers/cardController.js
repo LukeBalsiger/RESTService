@@ -26,6 +26,20 @@ var cardController = function(Card) {
         });
     }
 
+    var put = function(req, res){
+        req.card.name = req.body.name;
+        //repeat for every property
+        req.card.save();
+        res.json(req.card);
+    }
+
+    var patch = function(req, res){
+        if(req.body.name)
+        {
+            req.card.name = req.body.name;
+        }
+    }
+
     return {
         post: post,
         get: get

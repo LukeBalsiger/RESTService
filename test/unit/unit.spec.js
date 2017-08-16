@@ -28,7 +28,6 @@ describe('Card Controller Tests', function(){
 
             cardController.post(req, res);
 
-            console.log(res.send.args);
             res.status.calledWith(400).should.equal(true, 'Bad Status ' + res.status.args[0][0]);
             res.send.calledWith('Card Name is required').should.equal(true);
             
