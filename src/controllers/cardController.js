@@ -42,7 +42,9 @@ var cardController = function(Card) {
 
     return {
         post: post,
-        get: get
+        get: get,
+        put: put,
+        patch: patch
     }
 }
 
