@@ -3,11 +3,17 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     Card = require('./models/cardModel.js'),
-    port = process.env.PORT || 3000,
-    db = mongoose.connect('mongodb://localhost/cardAPI', {useMongoClient: true});
+    port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
+var db;
+if(process.env.ENV == 'Test') 
+    db = mongoose.connect('mongodb://localhost/cardAPI_test', {useMongoClient: true});
+else{
+    db = mongoose.connect('mongodb://localhost/cardAPI', {useMongoClient: true});
+}
+
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
 
 cardRouter = require('./routes/cardRoute')(Card);
 pokemonRouter = require('./routes/pokemonRoute')();
@@ -26,3 +32,5 @@ app.get('/', function(req, res){
 app.listen(port, function(){
     console.log('Running on port: ' + port);
 });
+
+module.exports = app;
