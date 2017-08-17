@@ -3,9 +3,9 @@ var cardController = function(Card) {
     var post = function(req, res){
             var card = new Card(req.body);
             
-            if(!req.body.name){
+            if(!req.body.name || !req.body.id){
                 res.status(400);
-                res.send('Card Name is required');
+                res.send('Card Name and Id are required');
             }
             else{
                 card.save();
@@ -28,25 +28,18 @@ var cardController = function(Card) {
             if(err)
                 console.log(err);
             else if(cards[0] != null)
+            {
+                res.status(200);
                 res.json(cards);
+            }
             else
                 res.send("This is where the cards will be!");
         });
     }
 
-    var put = function(req, res){
-        
-    }
-
-    var patch = function(req, res){
-        
-    }
-
     return {
         post: post,
-        get: get,
-        put: put,
-        patch: patch
+        get: get
     }
 }
 

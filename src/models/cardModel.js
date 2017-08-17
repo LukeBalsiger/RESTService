@@ -17,7 +17,8 @@ var cardModel = new Schema({
     setName:               {type: String},
     setCode:               {type: String},
     attacks:               {type: Object},
-    weaknesses:            {type: Object}
+    weaknesses:            {type: Object},
+    owned:                 {type: Boolean, default:false}
 });
 
 module.exports = mongoose.model('Card', cardModel);
