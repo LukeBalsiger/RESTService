@@ -14,7 +14,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 describe('Card CRUD Test', function(){
-    it('should allow a card to be posted and return an _id', function(done){
+    it('should allow a card to be posted and return an _id and data', function(done){
         var cardPost = {name:'Charizard', nationalPokedexNumber:6};
 
         agent.post('/api/pokemon/cards')
