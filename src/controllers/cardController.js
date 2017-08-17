@@ -28,7 +28,21 @@ var cardController = function(Card) {
 
     var put = function(req, res){
         req.card.name = req.body.name;
-        //repeat for every property
+        req.card.nationalPokedexNumber = req.body.nationalPokedexNumber;
+        req.card.imageUrl = req.body.imageUrl;
+        req.card.imageUrlHiRes = req.body.imageUrlHiRes;
+        req.card.types = req.body.types;
+        req.card.supertype = req.body.supertype;
+        req.card.subtype = req.body.subtype;
+        req.card.retreatCost = req.body.retreatCost;
+        req.card.number = req.body.number;
+        req.card.artist = req.body.artist;
+        req.card.rarity = req.body.rarity;
+        req.card.setName = req.body.setName;
+        req.card.setCode = req.body.setCode;
+        req.card.attacks = req.body.attacks;
+        req.card.weaknesses = req.body.weaknesses;
+
         req.card.save();
         res.json(req.card);
     }
