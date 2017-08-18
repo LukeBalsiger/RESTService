@@ -58,20 +58,10 @@ describe('Card Controller Tests:', function(){
     describe('Get', function(){
         it('should return a 500 and message if an error occurrs', function(){
             var Card = function(){};
-            var err = 'error';
-            Card.find = function(err,cards){
-                if(err)
-                {
-                    res.status(500);
-                    res.send('An error occurred')
-                }             
-                else if(cards[0] != null)
-                {
-                    res.status(200);
-                    res.json(cards);
-                }
-                else
-                    res.status(204);
+
+            Card.find = function(){
+                res.status(500);
+                res.send('An error occurred');
             };
 
             var req = {query: {}};
@@ -85,29 +75,34 @@ describe('Card Controller Tests:', function(){
             res.status.calledWith(500).should.equal(true, 'An error occured');
             res.send.calledWith('An error occurred').should.equal(true);
         })
-        it('should return a 204 (empty) if no cards are found', function(){
+        it('should return a 200 and results if at least one card is found', function(){
             var Card = function(){};
-            var err = '';
-            var cards = [];
-            cards[0] = null;
+
             Card.find = function(){
-                if(err)
-                {
-                    res.status(500);
-                    res.send('An error occurred')
-                }             
-                else if(cards[0] != null)
-                {
-                    res.status(200);
-                    res.json(cards);
-                }
-                else
-                    res.status(204);
+                res.status(200);
+                res.json({cards: {name: 'test'}});
             };
 
-            
+            var req = {query: {}};
 
-            var req = {body: {}, query: {}};
+            var res = {status: sinon.spy(), send: sinon.spy(), json: sinon.spy()};
+
+            var cardController = require('../../src/controllers/cardController')(Card);
+
+            cardController.get(req,res);
+
+            res.status.calledWith(200).should.equal(true, 'An error occured');
+            res.json.calledWith({cards: {name: 'test'}}).should.equal(true)
+        })
+        it('should return a 204 (empty) if no cards are found', function(){
+            var Card = function(){};
+
+            Card.find = function(){
+                res.status(204);
+                res.send('Empty');
+            };
+            
+            var req = {query: {}};
 
             var res = {status: sinon.spy(), send: sinon.spy(), json: sinon.spy()};
 
@@ -116,6 +111,8 @@ describe('Card Controller Tests:', function(){
             cardController.get(req,res);
 
             res.status.calledWith(204).should.equal(true, 'Empty');
+            res.send.calledWith('Empty').should.equal(true);
+
         })
     })
 });

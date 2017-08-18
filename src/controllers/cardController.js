@@ -1,4 +1,4 @@
-var cardController = function(Card) {
+var cardController = function(Card){
     
     var post = function(req, res){
             var card = new Card(req.body);
@@ -9,7 +9,6 @@ var cardController = function(Card) {
             }
             else{
                 card.save();
-                console.log(`${card.name} was put into the cardAPI database in the cards collection`);
                 res.status(201);
                 res.send(card);
             }
@@ -24,17 +23,11 @@ var cardController = function(Card) {
             query.name = req.query.name;
         }
         
-        Card.find(function(err, cards){
+        Card.find(query, function(err,cards){
             if(err)
-            {
-                res.status(500);
-                res.send('An error occurred')
-            } 
+                res.status(500).send('An error occurred: ' + err);
             else if(cards[0] != null)
-            {
-                res.status(200);
-                res.json(cards);
-            }
+                res.status(200).json(cards);
             else
                 res.status(204);
         });
