@@ -24,12 +24,18 @@ var cardController = function(Card){
         }
         
         Card.find(query, function(err,cards){
-            if(err)
-                res.status(500).send('An error occurred: ' + err);
-            else if(cards[0] != null)
-                res.status(200).json(cards);
-            else
+            if(err){
+                res.status(500);
+                res.send('An error occurred: ' + err);
+            }
+            else if(cards[0] != null){
+                res.status(200);
+                res.json(cards);
+            }
+            else{
                 res.status(204);
+                res.send('This is where the cards will be!');
+            }
         });
     }
 
