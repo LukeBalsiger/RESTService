@@ -21,4 +21,4 @@ var cardModel = new Schema({
     owned:                 {type: Boolean, default:false}
 });
 
-module.exports = mongoose.model('Card', cardModel);
+module.exports = mongoose.model('Card', cardModel), this.find;
