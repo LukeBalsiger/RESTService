@@ -59,7 +59,6 @@ describe('Card CRUD Test', function(){
 
         agent.get('/api/pokemon/cards')
             .end(function(err,results){
-                console.log(results);
                 results.status.should.equal(200);
                 results.body[0].name.should.equal('testCardName');
                 done();
