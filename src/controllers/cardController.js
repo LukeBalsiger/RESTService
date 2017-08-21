@@ -29,12 +29,12 @@ var cardController = function(Card){
                 res.send('An error occurred: ' + err);
             }
             else if(cards[0] != null){
-                res.status(200);
                 res.json(cards);
+                res.status(200);
             }
             else{
                 res.status(204);
-                res.send('This is where the cards will be!');
+                res.send('There are no cards yet!');
             }
         });
     }

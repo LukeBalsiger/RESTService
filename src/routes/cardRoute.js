@@ -12,23 +12,18 @@ var routes = function(Card){
                 next();
             }
             else{
-                res.status(404).send('no card found')
+                res.status(404);
+                res.send('no card found');
             }
         });
     });
 
     var cardController = require('../controllers/cardController')(Card)
-    var cardIdController = require('../controllers/cardIdController')(Card)
+
     cardRouter.route('/')
         .post(cardController.post)
         .get(cardController.get)
 
-    cardRouter.route('/:cardId')
-        .get(cardIdController.get)
-        .patch(cardIdController.patch)
-        .put(cardIdController.put)
-        .delete(cardIdController.delete);
-        
     return cardRouter;
 };
 
