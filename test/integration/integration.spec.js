@@ -15,7 +15,7 @@ chai.use(chaiAsPromised);
 chai.should();
 
 describe('Card CRUD Test', function(){
-    it('should allow a card to be posted and return an _id and data', function(done){
+    /*it('should post a card and be returned an _id and data', function(done){
         var cardPost = {name:'Charizard', id: 'newId', nationalPokedexNumber:6};
 
         agent.post('/api/pokemon/cards')
@@ -28,21 +28,50 @@ describe('Card CRUD Test', function(){
                 done();
             })
     })
+*/
+    it('should patch a property of a card and return the same _id and new data', function(done){
 
-    it('should allow a property of a card to be modified and return the same _id and new data', function(done){
-        var cardPost = {name:'Charizard', id: 'newId', nationalPokedexNumber:6};
+        /*var cardObject = Card.find({}, function(err, cards){
+            if(err)
+                console.log('error: ' + err);
+            else {
+                console.log(cards[0].name);
+                return cards;
+            }
+        });
+        done();*/
+
+        var testCard = new Card();
+        testCard.name = 'Charizard';
+        testCard.id = 'newId';
+        testCard.nationalPokedexNumber = 6;
         var cardPatch = {name: 'Charmander'};
+        var dBId;
 
-        agent.post('/api/pokemon/cards')
-            .send(cardPost)
-            .send(cardPatch)
-            .end(function(err,results){
-                results.body.name.should.equal('Charmander');
-                results.body.nationalPokedexNumber.should.equal(6);
-                done();
-            })
-    })
-    it('should get 204 when database is empty', function(done){
+
+        testCard.save(function(err){
+            if(err) console.log('error: ' + err);
+        }).then(
+            Card.find({}, function(err, cards){
+                if(err)
+                    console.log('error: ' + err);
+                else {
+                    console.log('cards: ' + cards[0]._id);
+                    dBId = cards[0]._id;
+                }
+            })).then(
+                agent.patch(`/api/pokemon/cards/${dBId}`)
+                    .send(cardPatch)
+                    .end(function(err,results){
+                        //console.log(results);
+                        results.body.name.should.equal('Charmander');
+                        results.body.id.should.equal('newId');
+                        results.body.nationalPokedexNumber.should.equal(6);
+                        done();
+                    })
+                )  
+    });
+    /*it('should get 204 when database is empty', function(done){
 
         agent.get('/api/pokemon/cards')
             .end(function(err,results){
@@ -61,9 +90,10 @@ describe('Card CRUD Test', function(){
             .end(function(err,results){
                 results.status.should.equal(200);
                 results.body[0].name.should.equal('testCardName');
+                results.body[0].id.should.equal('testCardId');
                 done();
             })
-    })
+    })*/
 
     afterEach(function(done){
         Card.remove().exec();
