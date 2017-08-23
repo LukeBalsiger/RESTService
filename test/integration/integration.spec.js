@@ -15,8 +15,17 @@ chai.use(chaiAsPromised);
 chai.should();
 mongoose.Promise = require('bluebird');
 
+beforeEach(function(done){
+    done();
+});
 
 describe('Card API Integration Tests', function(){
+    it('should get the correct single card when passed an id to serach on')
+
+    it('should put a new card in place of an old card')
+
+    it('should not patch an existing _id')
+
     it('should post a card and be returned an _id and data', function(done){
         var cardPost = {name:'Charizard', id: 'newId', nationalPokedexNumber:6};
 
@@ -33,16 +42,6 @@ describe('Card API Integration Tests', function(){
 
     it('should patch a property of a card and return the same _id and new data', function(done){
 
-        var cardObject = Card.find({}, function(err, cards){
-            if(err)
-                console.log('error: ' + err);
-            else {
-                return cards;
-            }
-        });
-        var dBId;
-        var cardPatch = {name: 'Charmander'};
-
         var testCard = new Card();
         testCard.name = 'Charizard';
         testCard.id = 'newId';
@@ -50,9 +49,11 @@ describe('Card API Integration Tests', function(){
 
         testCard.save(function(err, card){
             if(err) console.log(err);
+            else 
+            {
+                var dBId = card._id;
+                var cardPatch = {name: 'Charmander'};
 
-            else {
-                dBId = card._id;
                 agent.patch(`/api/pokemon/cards/${dBId}`)
                 .send(cardPatch)
                 .end(function(err,results){
@@ -61,9 +62,8 @@ describe('Card API Integration Tests', function(){
                     results.body.nationalPokedexNumber.should.equal(6);
                     done();
                 })
-
             }
-        })
+        });
     })
 
     it('should get 204 when database is empty', function(done){
@@ -79,10 +79,11 @@ describe('Card API Integration Tests', function(){
         var testCard = new Card();
         testCard.name = 'testCardName';
         testCard.id = 'testCardId';
+
         testCard.save(function(err, card){
             if(err) console.log(err);
-
-            else {
+            else 
+            {
                 agent.get('/api/pokemon/cards')
                 .end(function(err,results){
                     results.status.should.equal(200);
@@ -93,9 +94,9 @@ describe('Card API Integration Tests', function(){
             }
         });
     })
-})
+});
 
-    afterEach(function(done){
-        Card.remove().exec();
-        done();
-    })
+afterEach(function(done){
+    Card.remove().exec();
+    done();
+});
