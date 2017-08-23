@@ -15,8 +15,8 @@ gulp.task('default', function(){
         ignore: ['./node_modules/**', './test/**', './Work/**', './.git/**']
     })
     .on('start', function(){
-        console.log('Running unit tests...');
-        return gulp.src(['test/unit/*.js'], { read: false })
+        console.log('Running tests...');
+        return gulp.src(['test/unit/*.js', 'test/integration/*.js'], { read: false })
         .pipe(mocha({ reporter: 'spec' }))
         .on('error', gutil.log);
     })

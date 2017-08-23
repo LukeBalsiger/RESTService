@@ -16,8 +16,8 @@ chai.should();
 mongoose.Promise = require('bluebird');
 
 
-describe('Card CRUD Test', function(){
-    /*it('should post a card and be returned an _id and data', function(done){
+describe('Card API Integration Tests', function(){
+    it('should post a card and be returned an _id and data', function(done){
         var cardPost = {name:'Charizard', id: 'newId', nationalPokedexNumber:6};
 
         agent.post('/api/pokemon/cards')
@@ -30,18 +30,16 @@ describe('Card CRUD Test', function(){
                 done();
             })
     })
-*/
+
     it('should patch a property of a card and return the same _id and new data', function(done){
 
-        /*var cardObject = Card.find({}, function(err, cards){
+        var cardObject = Card.find({}, function(err, cards){
             if(err)
                 console.log('error: ' + err);
             else {
-                console.log(cards[0].name);
                 return cards;
             }
         });
-        done();*/
         var dBId;
         var cardPatch = {name: 'Charmander'};
 
@@ -58,7 +56,6 @@ describe('Card CRUD Test', function(){
                 agent.patch(`/api/pokemon/cards/${dBId}`)
                 .send(cardPatch)
                 .end(function(err,results){
-                    console.log(results);
                     results.body.name.should.equal('Charmander');
                     results.body.id.should.equal('newId');
                     results.body.nationalPokedexNumber.should.equal(6);
@@ -68,8 +65,8 @@ describe('Card CRUD Test', function(){
             }
         })
     })
-})
-    /*it('should get 204 when database is empty', function(done){
+
+    it('should get 204 when database is empty', function(done){
 
         agent.get('/api/pokemon/cards')
             .end(function(err,results){
@@ -82,16 +79,21 @@ describe('Card CRUD Test', function(){
         var testCard = new Card();
         testCard.name = 'testCardName';
         testCard.id = 'testCardId';
-        testCard.save();
+        testCard.save(function(err, card){
+            if(err) console.log(err);
 
-        agent.get('/api/pokemon/cards')
-            .end(function(err,results){
-                results.status.should.equal(200);
-                results.body[0].name.should.equal('testCardName');
-                results.body[0].id.should.equal('testCardId');
-                done();
-            })
-    })*/
+            else {
+                agent.get('/api/pokemon/cards')
+                .end(function(err,results){
+                    results.status.should.equal(200);
+                    results.body[0].name.should.equal('testCardName');
+                    results.body[0].id.should.equal('testCardId');
+                    done();
+                })
+            }
+        });
+    })
+})
 
     afterEach(function(done){
         Card.remove().exec();

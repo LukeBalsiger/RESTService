@@ -8,7 +8,7 @@ var assert = require('assert'),
 chai.use(chaiAsPromised);
 chai.should();
 
-describe('Card Controller Tests:', function(){
+describe('Card Controller Unit Tests:', function(){
     describe('Post', function(){
         it('should not allow an empty name on post', function(){
 
