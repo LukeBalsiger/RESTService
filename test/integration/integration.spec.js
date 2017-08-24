@@ -20,9 +20,39 @@ beforeEach(function(done){
 });
 
 describe('Card API Integration Tests', function(){
-    it('should get the correct single card when passed an id to serach on')
+    it('should get the correct single card when passed an id to search on', function(done){
+        var testCard1 = new Card();
+        testCard1.name = 'Lugia';
+        testCard1.id = 'LugiaId';
+
+        var testCard2 = new Card();
+        testCard2.name = 'Pikachu';
+        testCard2.id = 'PikachuId';
+
+        testCard1.save(function(err, result){
+            if(err) console.log(err);
+            else{
+                var firstCardId = result._id;
+                testCard2.save(function(err, card){
+                    if(err) console.log(err);
+                    else 
+                    {
+                        var secondCardId = card._id;
+                        agent.get(`/api/pokemon/cards/${firstCardId}`)
+                        .end(function(err,results){
+                            results.body.name.should.equal('Lugia');
+                            results.body.id.should.equal('LugiaId');
+                            done();
+                        })
+                    }
+                })
+            }
+        })
+    })
 
     it('should put a new card in place of an old card')
+
+    it('should get multiple cards back if multiple cards exists')
 
     it('should not patch an existing _id')
 

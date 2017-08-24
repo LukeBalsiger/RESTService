@@ -27,7 +27,7 @@ var routes = function(Card){
 
     cardRouter.route('/:cardId')
     .get(function(req,res){
-        res.json(req.book);
+        res.json(req.card);
     })
     .put(function(req,res){
         req.card.id = req.body.id;
