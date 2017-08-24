@@ -50,11 +50,109 @@ describe('Card API Integration Tests', function(){
         })
     })
 
-    it('should put a new card in place of an old card')
+    it('should filter by request query', function(done){
+        var testCard1 = new Card();
+        testCard1.name = 'Lugia';
+        testCard1.id = 'LugiaId';
 
-    it('should get multiple cards back if multiple cards exists')
+        var testCard2 = new Card();
+        testCard2.name = 'Pikachu';
+        testCard2.id = 'PikachuId';
 
-    it('should not patch an existing _id')
+        testCard1.save(function(err, result){
+            if(err) console.log(err);
+            else{
+                testCard2.save(function(err, card){
+                    if(err) console.log(err);
+                    else 
+                    {
+                        agent.get(`/api/pokemon/cards?name=${testCard1.name}`)
+                        .end(function(err,results){
+                            results.body[0].name.should.equal('Lugia');
+                            results.body[0].id.should.equal('LugiaId');
+                            done();
+                        })
+                    }
+                })
+            }
+        })
+    })
+
+    it('should put a new card in place of an old card', function(done){
+        var testCard1 = new Card();
+        testCard1.name = 'Lugia';
+        testCard1.id = 'LugiaId';
+
+        testCard1.save(function(err, result){
+            if(err) console.log(err);
+            else{
+                var firstCardId = result._id;
+                var cardPut = {__v: 0, id: 'PikachuId', name: 'Pikachu', _id: `${firstCardId}`, owned: false}
+                agent.put(`/api/pokemon/cards/${firstCardId}`)
+                .send(cardPut)
+                .end(function(err,results){
+                    results.body.name.should.equal('Pikachu');
+                    results.body.id.should.equal('PikachuId');
+                    results.body._id.should.equal(`${firstCardId}`);
+                    done();
+                })
+            }
+        })
+    })
+
+    it('should get multiple cards back if multiple cards exists', function(done){
+    var testCard1 = new Card();
+        testCard1.name = 'Lugia';
+        testCard1.id = 'LugiaId';
+
+        var testCard2 = new Card();
+        testCard2.name = 'Pikachu';
+        testCard2.id = 'PikachuId';
+
+        testCard1.save(function(err, result){
+            if(err) console.log(err);
+            else{
+                testCard2.save(function(err, card){
+                    if(err) console.log(err);
+                    else 
+                    {
+                        agent.get(`/api/pokemon/cards`)
+                        .end(function(err,results){
+                            results.body[0].name.should.equal('Lugia');
+                            results.body[0].id.should.equal('LugiaId');
+                            results.body[1].name.should.equal('Pikachu');
+                            results.body[1].id.should.equal('PikachuId');
+                            done();
+                        })
+                    }
+                })
+            }
+        })
+    })
+    it('should not patch an existing _id', function(){
+        var testCard = new Card();
+        testCard.name = 'Charizard';
+        testCard.id = 'newId';
+        testCard.nationalPokedexNumber = 6;
+
+        testCard.save(function(err, card){
+            if(err) console.log(err);
+            else 
+            {
+                var dBId = card._id;
+                var cardPatch = {_id: 'haha'};
+
+                agent.patch(`/api/pokemon/cards/${dBId}`)
+                .send(cardPatch)
+                .end(function(err,results){
+                    results.body.name.should.equal('Charizard');
+                    results.body._id.should.not.equal('haha');
+                    results.body._id.should.equal(dBId);
+                    done();
+                })
+            }
+        });
+    })
 
     it('should post a card and be returned an _id and data', function(done){
         var cardPost = {name:'Charizard', id: 'newId', nationalPokedexNumber:6};
@@ -104,7 +202,7 @@ describe('Card API Integration Tests', function(){
                 done();
             })
     })
-    it('should get json object and 200 status if card exists', function(done){
+    it('should get card and 200 status if card exists', function(done){
 
         var testCard = new Card();
         testCard.name = 'testCardName';
@@ -127,6 +225,5 @@ describe('Card API Integration Tests', function(){
 });
 
 afterEach(function(done){
-    Card.remove().exec();
-    done();
+    Card.remove().exec().then(done());
 });

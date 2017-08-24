@@ -35,7 +35,7 @@ var routes = function(Card){
         req.card.nationalPokedexNumber = req.body.nationalPokedexNumber;
         req.card.imageUrl = req.body.imageUrl;
         req.card.imageUrlHiRes = req.body.imageUrlHiRes;
-        req.req.card.types = req.body.types;
+        req.card.types = req.body.types;
         req.card.supertype = req.body.supertype;
         req.card.subtype = req.body.subtype;
         req.card.retreatCost = req.body.retreatCost;            
@@ -48,7 +48,7 @@ var routes = function(Card){
         req.card.weaknesses = req.body.weaknesses;
         req.card.owned  = req.body.owned;
 
-        card.save(function(err){
+        req.card.save(function(err){
             if(err)
                  res.status(500).send(err);
             else{

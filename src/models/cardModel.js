@@ -10,6 +10,7 @@ var cardModel = new Schema({
     types:                 {type: Object},
     supertype:             {type: String},
     subtype:               {type: String},
+    hp:                    {type: String},
     retreatCost:           {type: Object},
     number:                {type: String},
     artist:                {type: String},
