@@ -2,15 +2,28 @@ var cardController = function(Card){
     
     var post = function(req, res){
             var card = new Card(req.body);
-            
+                  
             if(!req.body.name || !req.body.id){
                 res.status(400);
                 res.send('Card Name and Id are required');
             }
             else{
-                card.save();
-                res.status(201);
-                res.send(card);
+                Card.find({id: `${card.id}`}, function(err, cards){
+                    if(err) console.log(err);
+                    else{
+                        if(cards[0] != null)
+                        {
+                            console.log(cards);
+                            res.status(403);
+                            res.send('A card with that Id already exists, no card was created.')
+                        }
+                        else{
+                            card.save();
+                            res.status(201);
+                            res.send(card);
+                        }
+                    }
+                })
             }
         }
 

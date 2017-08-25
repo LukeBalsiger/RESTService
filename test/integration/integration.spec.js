@@ -15,12 +15,10 @@ chai.use(chaiAsPromised);
 chai.should();
 mongoose.Promise = require('bluebird');
 
-beforeEach(function(done){
-    done();
-});
 
 describe('Card API Integration Tests', function(){
     it('should get the correct single card when passed an id to search on', function(done){
+        
         var testCard1 = new Card();
         testCard1.name = 'Lugia';
         testCard1.id = 'LugiaId';
@@ -39,6 +37,7 @@ describe('Card API Integration Tests', function(){
                     {
                         var secondCardId = card._id;
                         agent.get(`/api/pokemon/cards/${firstCardId}`)
+                        .timeout({response: 10000, deadline: 10000})
                         .end(function(err,results){
                             results.body.name.should.equal('Lugia');
                             results.body.id.should.equal('LugiaId');
@@ -51,6 +50,7 @@ describe('Card API Integration Tests', function(){
     })
 
     it('should filter by request query', function(done){
+        
         var testCard1 = new Card();
         testCard1.name = 'Lugia';
         testCard1.id = 'LugiaId';
@@ -67,6 +67,7 @@ describe('Card API Integration Tests', function(){
                     else 
                     {
                         agent.get(`/api/pokemon/cards?name=${testCard1.name}`)
+                        .timeout({response: 10000, deadline: 10000})
                         .end(function(err,results){
                             results.body[0].name.should.equal('Lugia');
                             results.body[0].id.should.equal('LugiaId');
@@ -79,6 +80,7 @@ describe('Card API Integration Tests', function(){
     })
 
     it('should put a new card in place of an old card', function(done){
+        
         var testCard1 = new Card();
         testCard1.name = 'Lugia';
         testCard1.id = 'LugiaId';
@@ -90,6 +92,7 @@ describe('Card API Integration Tests', function(){
                 var cardPut = {__v: 0, id: 'PikachuId', name: 'Pikachu', _id: `${firstCardId}`, owned: false}
                 agent.put(`/api/pokemon/cards/${firstCardId}`)
                 .send(cardPut)
+                .timeout({response: 10000, deadline: 10000})
                 .end(function(err,results){
                     results.body.name.should.equal('Pikachu');
                     results.body.id.should.equal('PikachuId');
@@ -101,7 +104,8 @@ describe('Card API Integration Tests', function(){
     })
 
     it('should get multiple cards back if multiple cards exists', function(done){
-    var testCard1 = new Card();
+        
+        var testCard1 = new Card();
         testCard1.name = 'Lugia';
         testCard1.id = 'LugiaId';
 
@@ -117,6 +121,7 @@ describe('Card API Integration Tests', function(){
                     else 
                     {
                         agent.get(`/api/pokemon/cards`)
+                        .timeout({response: 10000, deadline: 10000})
                         .end(function(err,results){
                             results.body[0].name.should.equal('Lugia');
                             results.body[0].id.should.equal('LugiaId');
@@ -130,6 +135,8 @@ describe('Card API Integration Tests', function(){
         })
     })
     it('should not patch an existing _id', function(){
+        
+        var cardPatch = {_id: 'haha'};
         var testCard = new Card();
         testCard.name = 'Charizard';
         testCard.id = 'newId';
@@ -140,10 +147,10 @@ describe('Card API Integration Tests', function(){
             else 
             {
                 var dBId = card._id;
-                var cardPatch = {_id: 'haha'};
 
                 agent.patch(`/api/pokemon/cards/${dBId}`)
                 .send(cardPatch)
+                .timeout({response: 10000, deadline: 10000})
                 .end(function(err,results){
                     results.body.name.should.equal('Charizard');
                     results.body._id.should.not.equal('haha');
@@ -155,10 +162,12 @@ describe('Card API Integration Tests', function(){
     })
 
     it('should post a card and be returned an _id and data', function(done){
+       
         var cardPost = {name:'Charizard', id: 'newId', nationalPokedexNumber:6};
 
         agent.post('/api/pokemon/cards')
             .send(cardPost)
+            .timeout({response: 10000, deadline: 10000})
             .end(function(err,results){
                 results.status.should.equal(201);
                 results.body.name.should.equal('Charizard');
@@ -170,6 +179,7 @@ describe('Card API Integration Tests', function(){
 
     it('should patch a property of a card and return the same _id and new data', function(done){
 
+        var cardPatch = {name: 'Charmander'};
         var testCard = new Card();
         testCard.name = 'Charizard';
         testCard.id = 'newId';
@@ -180,10 +190,10 @@ describe('Card API Integration Tests', function(){
             else 
             {
                 var dBId = card._id;
-                var cardPatch = {name: 'Charmander'};
 
                 agent.patch(`/api/pokemon/cards/${dBId}`)
                 .send(cardPatch)
+                .timeout({response: 10000, deadline: 10000})
                 .end(function(err,results){
                     results.body.name.should.equal('Charmander');
                     results.body.id.should.equal('newId');
@@ -197,6 +207,7 @@ describe('Card API Integration Tests', function(){
     it('should get 204 when database is empty', function(done){
 
         agent.get('/api/pokemon/cards')
+            .timeout({response: 10000, deadline: 10000})
             .end(function(err,results){
                 results.status.should.equal(204);
                 done();
@@ -213,6 +224,7 @@ describe('Card API Integration Tests', function(){
             else 
             {
                 agent.get('/api/pokemon/cards')
+                .timeout({response: 1000, deadline: 1000})
                 .end(function(err,results){
                     results.status.should.equal(200);
                     results.body[0].name.should.equal('testCardName');
