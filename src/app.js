@@ -3,7 +3,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     Card = require('./models/cardModel.js'),
-    port = process.env.PORT || 3000;
+    port = process.env.PORT || 4000;
 
 var db;
 if(process.env.ENV == 'Test') 
@@ -15,18 +15,12 @@ else{
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-cardRouter = require('./routes/cardRoute')(Card);
-pokemonRouter = require('./routes/pokemonRoute')();
+updateRouter = require('./routes/updateRoute')();
 
-app.use('/api/pokemon/cards',cardRouter);
-app.use('/api/pokemon',pokemonRouter);
-
-app.get('/api', function(req, res){
-    res.send('welcome to my API');
-});
+app.use('/update',updateRouter);
 
 app.get('/', function(req, res){
-    res.send('welcome to my website!');
+    res.send('welcome to my update module!');
 });
 
 app.listen(port, function(){
