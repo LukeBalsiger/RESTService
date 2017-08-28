@@ -1,15 +1,16 @@
 var express = require('express');
 
 var routes = function(){
-    var pokemonRouter = express.Router();
+    var updateRouter = express.Router();
 
-    pokemonRouter.route('/')
+    updateRouter.route('/')
         .post(function(req, res){
+            
         })
         .get(function(req, res){
-            res.send('Welcome to the pokemon route!');
+            res.send('Welcome to the update route!');
         });
-    return pokemonRouter;
+    return updateRouter;
 };
 
 module.exports = routes;
