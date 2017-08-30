@@ -15,11 +15,23 @@ else{
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+cardRouter = require('./routes/cardRoute')(Card);
+pokemonRouter = require('./routes/pokemonRoute')();
 updateRouter = require('./routes/updateRoute')();
 
+app.use('/api/pokemon/cards',cardRouter);
+app.use('/api/pokemon',pokemonRouter);
 app.use('/update',updateRouter);
 
+app.get('/api', function(req, res){
+    res.send('welcome to my API');
+});
+
 app.get('/', function(req, res){
+    res.send('welcome to my website!');
+});
+
+app.get('/update', function(req, res){
     res.send('welcome to my update module!');
 });
 
