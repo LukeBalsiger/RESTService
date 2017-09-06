@@ -3,6 +3,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     Card = require('./models/cardModel.js'),
+    pokemon = require('pokemontcgsdk'),
     port = process.env.PORT || 3000;
 
 var db;
@@ -17,9 +18,11 @@ app.use(bodyParser.json());
 
 cardRouter = require('./routes/cardRoute')(Card);
 pokemonRouter = require('./routes/pokemonRoute')();
+updateRouter = require('./routes/updateRoute')(pokemon);
 
 app.use('/api/pokemon/cards',cardRouter);
 app.use('/api/pokemon',pokemonRouter);
+app.use('/api/update',updateRouter);
 
 app.get('/api', function(req, res){
     res.send('welcome to my API');
