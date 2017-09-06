@@ -1,16 +1,17 @@
-var updateController = function(pokemon){
-    
+var updateController = function(pokemon, Card, http){
 
     var post = function(req, res){
         //add filtering for req.body
         pokemon.card.where(req.body)
         .then(result => {
-            var list = [];
+            var goodList = [];
+            var badList = [];
             for(var i=0; i < result.length; i++){
                 var obj = result[i];
-                list.push(obj.name);
+                var temp = new Card(obj);
             }
-            res.send(list);
+            res.status(201);
+            res.send('These cards were created: ' + goodList);
         })
     }
 
