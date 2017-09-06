@@ -4,9 +4,13 @@ var updateController = function(pokemon, Card, http){
         //add filtering for req.body
         pokemon.card.where(req.body)
         .then(result => {
-            console.log(result.length);
+            console.log(result);
             for(var i=0; i < result.length; i++){
                 var obj = result[i];
+                var interim = JSON.stringify(obj);
+                interim = interim.replace("\"set\":", "\"setName\":");
+                obj = JSON.parse(interim);
+                console.log(obj);
                 var post_options = {
                     host: 'localhost',
                     port: 8000,
@@ -23,7 +27,7 @@ var updateController = function(pokemon, Card, http){
                         response += body;
                     });
                     res.on('end', function(){
-                        console.log(response);
+                        //console.log(response);
                     })
                 });
 
@@ -31,6 +35,7 @@ var updateController = function(pokemon, Card, http){
                 post_req.end();
             }
             res.status(201);
+            res.send('Cards updated!')
         })
     }
 
